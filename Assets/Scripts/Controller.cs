@@ -5,18 +5,31 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     private UserView viewPoint;
-    private int zoomDir, moveDir, rotateDir;
     private ArrayList dots = new ArrayList(100);
+    private ArrayList objects = new ArrayList(100);
+    private Person person;
     
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         viewPoint = new UserView("ViewPoint");
-        Debug.Log(viewPoint);
+        GameObject person1 = GameObject.Find("Person");
+        person = new Person(person1);
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
+    {
+        moveView();
+        moveCounters();
+    }
+
+    public void moveCounters()
+    {
+        person.move();
+    }
+
+    public void moveView()
     {
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -30,15 +43,15 @@ public class Controller : MonoBehaviour
         {
             viewPoint.move(1);
         }
-        else if(Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
         {
             viewPoint.move(-1);
         }
-        else if(Input.GetKey(KeyCode.W))
+        else if (Input.GetKey(KeyCode.W))
         {
             viewPoint.zoom(1);
         }
-        else if(Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             viewPoint.zoom(-1);
         }

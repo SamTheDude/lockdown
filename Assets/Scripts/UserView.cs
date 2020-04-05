@@ -11,7 +11,6 @@ public class UserView
     {
         cameraTransform = GameObject.Find(name).GetComponent<Transform>();
         position = cameraTransform.position;
-        //Debug.Log("(" + position.x + "," + position.y + "," + position.z + ")");
     }
 
     public void zoom(int direction)
