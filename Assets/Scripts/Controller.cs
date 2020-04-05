@@ -4,47 +4,43 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    private UserView cameraObject;
-
+    private UserView viewPoint;
+    private int zoomDir, moveDir, rotateDir;
+    private ArrayList dots = new ArrayList(100);
+    
     // Start is called before the first frame update
     void Start()
     {
-        cameraObject = new UserView("Main Camera");
-        Debug.Log(cameraObject);
+        viewPoint = new UserView("ViewPoint");
+        Debug.Log(viewPoint);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            Debug.Log("Rotate right");
-            cameraObject.rotate(1);
+            viewPoint.rotate(1);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Debug.Log("Rotate left");
-            cameraObject.rotate(-1);
+            viewPoint.rotate(-1);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow))
         {
-            Debug.Log("Move right");
-            cameraObject.move(1);
+            viewPoint.move(1);
         }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        else if(Input.GetKey(KeyCode.DownArrow))
         {
-            Debug.Log("Move left");
-            cameraObject.move(-1);
+            viewPoint.move(-1);
         }
-        else if(Input.GetKeyDown(KeyCode.W))
+        else if(Input.GetKey(KeyCode.W))
         {
-            Debug.Log("Zoom in");
-            cameraObject.zoom(1);
+            viewPoint.zoom(1);
         }
-        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        else if(Input.GetKey(KeyCode.S))
         {
-            Debug.Log("Zoom out");
-            cameraObject.zoom(-1);
+            viewPoint.zoom(-1);
         }
     }
 }
