@@ -5,9 +5,8 @@ using UnityEngine;
 public class Person : MapObject
 {
     private Material colour;
-    private double[] directions = {50,-1,160,-1,50,-1,160,-1};
-    private double amountMoved = 0;
-    private int movementIndex = 0;
+    private static float MOVE_DIST = (float)0.1;
+    private static float MAX_DIST = 10;
 
     public Person(GameObject correspondsTo) : base(correspondsTo)
     {
@@ -16,18 +15,25 @@ public class Person : MapObject
 
     public void move()
     {
-        if(amountMoved < directions[movementIndex])
+        if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), MAX_DIST))
         {
-            transform.Translate((float)0.1,0,0);
+            transform.Translate(MOVE_DIST,0,0);
             Vector3 coords = transform.position;
-            coords.x += (float)0.1;
-            amountMoved += 0.1;
+            coords.x += MOVE_DIST;
         }
         else
         {
-            amountMoved = 0;
-            rotate(directions[movementIndex+1]);
-            movementIndex = (movementIndex + 2) % 8;
+            int direction;
+            switch(Random.Range(0,1))
+            {
+                case 0:
+                    direction = 1;
+                    break;
+                default:
+                    direction = -1;
+                    break;
+            }
+            rotate(direction);
         }
     }
 
