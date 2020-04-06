@@ -9,16 +9,19 @@ public class Controller : MonoBehaviour
     private ArrayList objects = new ArrayList(100);
     private Person person;
 
-    private int currentView;
+    private int currentView = 0;
     
     // Start is called before the first frame update
     public void Start()
     {
-        views[0] = new UserView("StaticViewPoint");
-        views[1] = new UserView("RoamViewPoint");
-        currentView = 0;
+        views[0] = new Aerial("StaticViewPoint");
+        views[1] = new Roam("RoamViewPoint");
         GameObject person1 = GameObject.Find("Person");
         person = new Person(person1);
+        for(int i = 1; i < views.Length; i++)
+        {
+            views[i].changeState(false);
+        }
     }
 
     // Update is called once per frame
@@ -33,19 +36,9 @@ public class Controller : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            switch(currentView)
-            {
-                case 0:
-                    views[0].changeState(false);
-                    views[1].changeState(true);
-                    currentView = 1;
-                    break;
-                case 1:
-                    views[0].changeState(true);
-                    views[1].changeState(false);
-                    currentView = 0;
-                    break;
-            }
+            views[currentView].changeState(false);
+            currentView = (currentView + 1)%2;
+            views[currentView].changeState(true);
         }
     }
 
@@ -56,29 +49,74 @@ public class Controller : MonoBehaviour
 
     public void moveView()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
+        UserView view = views[currentView];
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            views[currentView].rotate(1);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            views[currentView].rotate(-1);
-        }
-        else if (Input.GetKey(KeyCode.UpArrow))
-        {
-            views[currentView].move(1);
+            moveCamera(view, 1);
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
-            views[currentView].move(-1);
+            moveCamera(view, -1);
         }
-        else if (Input.GetKey(KeyCode.W))
+        else if(Input.GetKey(KeyCode.LeftArrow))
         {
-            views[currentView].zoom(1);
+            moveCamera(view,2);
+        } 
+        else if(Input.GetKey(KeyCode.RightArrow))
+        {
+            moveCamera(view, 3);
+        }
+        else
+        {
+            zoomCamera(view);
+        }
+    }
+
+    public void moveCamera(UserView view, int direction)
+    {
+        if (view is Roam)
+        {
+            Roam roamer = (Roam)view;
+            if(direction == 2)
+            {
+                roamer.rotate(-1);
+            }
+            else if(direction == 3)
+            {
+                roamer.rotate(1);
+            }
+            else
+            {
+                roamer.move(direction);
+            }
+        }
+        else if (view is Aerial)
+        {
+            Aerial aerial = (Aerial)view;
+            if (direction == 2)
+            {
+                aerial.move(4);
+            }
+            else if (direction == 3)
+            {
+                aerial.move(2);
+            }
+            else
+            {
+                aerial.move(direction);
+            }
+        }
+    }
+
+    public void zoomCamera(UserView view)
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            view.zoom(1);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            views[currentView].zoom(-1);
+            view.zoom(-1);
         }
     }
 }

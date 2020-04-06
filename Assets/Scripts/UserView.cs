@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class UserView
+public abstract class UserView
 {
-    private GameObject viewObject;
-    private Transform cameraTransform;
-    private Vector3 position;
+    protected GameObject viewObject;
+    protected Transform cameraTransform;
+    protected Vector3 position;
 
     public UserView(string name)
     {
@@ -26,17 +24,5 @@ public class UserView
         position.z += direction;
     }
 
-    public void rotate(int direction)
-    {
-        cameraTransform.Rotate(-40,0,0,Space.Self);
-        cameraTransform.Rotate(0, direction, 0, Space.Self);
-        cameraTransform.Rotate(40, 0, 0, Space.Self);
-    }
-
-    public void move(int direction)
-    {
-        cameraTransform.Translate(0, direction, direction);
-        position.y += direction;
-        position.z = position.z - direction;
-    }
+    public abstract void move(int direction);
 }
