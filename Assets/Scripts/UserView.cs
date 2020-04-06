@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class UserView
 {
+    private GameObject viewObject;
     private Transform cameraTransform;
     private Vector3 position;
 
     public UserView(string name)
     {
-        cameraTransform = GameObject.Find(name).GetComponent<Transform>();
+        viewObject = GameObject.Find(name);
+        cameraTransform = viewObject.GetComponent<Transform>();
         position = cameraTransform.position;
+    }
+
+    public void changeState(bool active)
+    {
+        viewObject.SetActive(active);
     }
 
     public void zoom(int direction)
